@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/bulls-and-cows/submissions/869821096/
+
+class Solution {
+    public String getHint(String secret, String guess) {
+        StringBuilder sb = new StringBuilder();
+        int n = secret.length();
+        int[] sec = new int[10];
+        int[] gue = new int[10];
+        int cnt = 0;
+        for(int i=0; i<n; i++){
+            sec[secret.charAt(i)-'0']++;
+            gue[guess.charAt(i)-'0']++;
+            if(secret.charAt(i)==guess.charAt(i))
+                cnt++;
+        }
+        int comm = 0;
+        for(int i=0; i<10; i++){
+            comm += Math.min(sec[i], gue[i]);
+        }
+        sb.append(cnt);
+        sb.append("A");
+        sb.append(comm-cnt);
+        sb.append("B");
+        return sb.toString();
+    }
+}
