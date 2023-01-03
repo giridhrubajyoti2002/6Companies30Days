@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/minimum-deletions-to-make-array-divisible/description/
+
+
+class Solution {
+    public int minOperations(int[] nums, int[] numsDivide) {
+        int gcd = numsDivide[0];
+        for(int i=1; i<numsDivide.length; i++){
+            gcd = GCD(gcd, numsDivide[i]);
+        }
+        Arrays.sort(nums);
+        int cnt = 0;
+        for(int i:nums){
+            if(gcd%i==0)
+                break;
+            else
+                cnt++;
+        }
+        return cnt==nums.length?-1:cnt;
+    }
+    public int GCD(int a, int b){
+        return b==0? a : GCD(b, a%b);
+    }
+}

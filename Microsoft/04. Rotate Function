@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/rotate-function/
+
+
+class Solution {
+    public int maxRotateFunction(int[] nums) {
+        int sum = 0;
+        int F = 0;
+        int n = nums.length;
+        for(int i=0; i<n; i++){
+            sum += nums[i];
+            F += i*nums[i];
+        }   
+        int ans = F;
+        F = F - (n-1)*nums[n-1] + (sum - nums[n-1]);
+        ans = Math.max(ans, F);
+        for(int i=n-2; i>0; i--){
+            F = F - (n-1)*nums[i] + (sum - nums[i]);
+            ans = Math.max(ans, F);
+        }
+        return ans;
+    }
+}

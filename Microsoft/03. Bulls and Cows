@@ -1,4 +1,4 @@
-// https://leetcode.com/problems/bulls-and-cows/submissions/869821096/
+// https://leetcode.com/problems/bulls-and-cows/
 
 class Solution {
     public String getHint(String secret, String guess) {
