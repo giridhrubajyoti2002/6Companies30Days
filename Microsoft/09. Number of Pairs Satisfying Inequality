@@ -1,0 +1,34 @@
+//  https://leetcode.com/problems/number-of-pairs-satisfying-inequality/description/
+
+
+class Solution {
+    public long numberOfPairs(int[] nums1, int[] nums2, int diff) {
+        int n = nums1.length;
+        int[] nums = new int[n];
+        for(int i=0; i<n; i++){
+            nums[i] = nums1[i] - nums2[i];
+        }
+        return mergeSort(nums, 0, n-1, diff);
+    }
+    public long mergeSort(int[] nums, int st, int en, int diff){
+        if(st==en)  return 0;
+        int mid = (st + en) / 2;
+        long count = mergeSort(nums, st, mid, diff);
+        count += mergeSort(nums, mid+1, en, diff);
+        count += countPairs(nums, st, mid, en, diff);
+        return count;
+    }
+    public long countPairs(int[] nums, int st, int mid, int en, int diff){
+        int l = st, r = mid + 1;
+        long count = 0;
+        while(l <=  mid && r <= en){
+            if(nums[l] <= nums[r] + diff){
+                count += en - r + 1;
+                l++;
+            }else
+                r++;
+        }
+        Arrays.sort(nums, st, en + 1);
+        return count;
+    }
+}

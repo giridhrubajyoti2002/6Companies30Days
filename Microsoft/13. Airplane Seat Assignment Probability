@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/airplane-seat-assignment-probability/description/
+
+
+class Solution {
+    public double nthPersonGetsNthSeat(int n) {
+        return P(n);
+    }
+    public double P(double n){
+        if(n==1 || n==2)
+            return 1/n;
+        double x = (n-(n-1))/(n-(n-2));
+        // P(n) =  P(n-1)*x + (1-P(n-1))*x = x;
+        return x;
+    }
+}
