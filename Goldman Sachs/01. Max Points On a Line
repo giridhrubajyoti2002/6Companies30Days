@@ -1,0 +1,36 @@
+//  https://leetcode.com/problems/max-points-on-a-line/description/
+
+
+class Solution {
+    public int maxPoints(int[][] points) {
+        int n = points.length;
+        if(n==1)
+            return 1;
+        int ans = -1;
+        for(int i=0; i<n-1; i++){
+            Map<Double,Integer> gradient = new HashMap<>();
+            Map<Integer,Integer> intercept_X = new HashMap<>();
+            Map<Integer,Integer> intercept_Y = new HashMap<>();
+            for(int j=i+1; j<n; j++){
+                if(points[j][0]==points[i][0]){
+                    intercept_X.put(points[i][0], intercept_X.getOrDefault(points[i][0], 0) + 1);
+                    continue;
+                }
+                double atan = Math.atan(((double)points[j][1]-points[i][1])/((double)points[j][0]-points[i][0]));
+                // double c = points[i][1] - m*points[i][0];
+                if(atan==0){
+                    intercept_Y.put(points[i][1], intercept_Y.getOrDefault(points[i][1], 0) + 1);
+                }else{
+                    gradient.put(atan, gradient.getOrDefault(atan, 0) + 1);
+                }
+            }
+            if(!gradient.isEmpty())
+                ans = Math.max(ans, Collections.max(gradient.values()) + 1);
+            if(!intercept_X.isEmpty())
+                ans = Math.max(ans, Collections.max(intercept_X.values()) + 1);
+            if(!intercept_Y.isEmpty())
+                ans = Math.max(ans, Collections.max(intercept_Y.values()) + 1);
+        }
+        return ans;
+    }
+}

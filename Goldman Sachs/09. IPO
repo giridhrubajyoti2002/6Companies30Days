@@ -1,0 +1,41 @@
+//  https://leetcode.com/problems/ipo/
+
+
+class Solution {
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        int n = capital.length;
+        Pair[] arr = new Pair[n];
+        for(int i=0; i<n; i++){
+            arr[i] = new Pair(profits[i], capital[i]);
+        }
+        Arrays.sort(arr, new Comparator<Pair>(){
+            public int compare(Pair a, Pair b){
+                if(a.capital==b.capital)
+                    return b.profit - a.profit;
+                return a.capital - b.capital;
+            }
+        });
+        Queue<Pair> q = new PriorityQueue<Pair>(new Comparator<Pair>(){
+            public int compare(Pair a, Pair b){
+                return b.profit - a.profit;
+            }
+        });
+        for(int i=0; k>0; ){
+            while(i<n && w>=arr[i].capital){
+                q.add(arr[i++]);
+            }
+            if(q.isEmpty())
+                break;
+            w += q.poll().profit;
+            k--;
+        }
+        return w;
+    }
+}
+class Pair{
+    int profit, capital;
+    public Pair(int profit, int capital){
+        this.profit = profit;
+        this.capital = capital;
+    }
+}

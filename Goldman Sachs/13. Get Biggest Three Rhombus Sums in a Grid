@@ -1,0 +1,62 @@
+// https://leetcode.com/problems/get-biggest-three-rhombus-sums-in-a-grid/
+
+
+class Solution {
+    public int[] getBiggestThree(int[][] grid) {
+        int n = grid.length, m = grid[0].length;
+        int[][] leftRight = new int[n][m];
+        int[][] rightLeft = new int[n][m];
+        leftRight[0] = rightLeft[0] =  grid[0];
+        for(int i=0; i<n; i++){
+            leftRight[i][0] = grid[i][0];
+            rightLeft[i][m-1] = grid[i][m-1];
+        }
+        for(int i=1; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(j>0)
+                    leftRight[i][j] = grid[i][j] + leftRight[i-1][j-1];
+                if(j<m-1)
+                    rightLeft[i][j] = grid[i][j] + rightLeft[i-1][j+1];
+            }
+        }
+        List<Integer> list = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                list.add(grid[i][j]);  // for len = 0
+                for(int len=1; ;len++){
+                    if(j-len<0 || j+len>=m || i+2*len>=n)
+                        break;
+                    // Four points are (i,j)->top, (i+len,j-len)->left, (i+len,j+len)->right, (i+2*len,j)->bottom
+                    int sum = rightLeft[i+len][j-len] - rightLeft[i][j]; // top_left + left - top
+                    sum += rightLeft[i+2*len][j] - rightLeft[i+len][j+len]; // bottom_right + bottom - right
+                    sum += leftRight[i+2*len][j] - leftRight[i+len][j-len]; // bottom-left + bottom - left
+                    sum += leftRight[i+len][j+len] - leftRight[i][j]; // top-right + right - top
+                    sum = sum + grid[i][j] - grid[i+2*len][j]; // sum = sum + top - bottom; 
+                    list.add(sum);
+                }
+            }
+        }
+        list.sort(Collections.reverseOrder());
+        Set<Integer> set = new HashSet<>();
+        for(int i=0; i<list.size() && set.size()<3; i++)
+            set.add(list.get(i));
+        int[] ans = new int[set.size()];
+        int i = 0;
+        for(int x:set)
+            ans[i++] = x;
+        Arrays.sort(ans);
+        reverse(ans);
+        return ans;            
+    }
+    public void reverse(int[] arr){
+        int n = arr.length;
+        for(int i=0; i<n/2; i++){
+            swap(arr,i,n-1-i);
+        }
+    }
+    public void swap(int[] arr, int i, int j){
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+}

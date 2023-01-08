@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/factorial-trailing-zeroes/description/
+
+
+class Solution {
+    public int trailingZeroes(int n) {
+        int ans = 0;
+        for(int idx=5; n/idx>0; idx*=5){
+            ans += n/idx;
+        }
+        return ans;
+    }
+}

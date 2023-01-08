@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/valid-square/description/
+
+
+class Solution {
+    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+        int n = 4;
+        int[][] arr = {p1, p2, p3, p4};
+        Set<Double> length = new HashSet<>();
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                if(isEqual(arr[i], arr[j]))
+                    return false;
+                length.add(getDistance(arr[i], arr[j]));
+            }
+        }
+        return length.size()==2;
+    }
+    public double getDistance(int[] p1, int[] p2){
+        return Math.sqrt(Math.pow(p1[0]-p2[0], 2) + Math.pow(p1[1]-p2[1], 2));
+    }
+    public boolean isEqual(int[] p1, int[] p2){
+        return p1[0]==p2[0] && p1[1]==p2[1];
+    }
+}
