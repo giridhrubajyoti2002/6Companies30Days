@@ -1,0 +1,27 @@
+//  https://leetcode.com/problems/maximum-points-in-an-archery-competition/description/
+
+
+class Solution {
+    int[] ans;
+    int maxPoints = 0;
+    public int[] maximumBobPoints(int numArrows, int[] aliceArrows) {
+        maximumBobPointsUtil(numArrows, aliceArrows, new int[12], 11, 0);        
+        return ans;
+    }
+    public void maximumBobPointsUtil(int remainArrows, int[] aliceArrows, int[] bobArrows, int i, int points){
+        if(i<0){
+            if(points > maxPoints){
+                maxPoints = points;
+                bobArrows[0] += remainArrows;
+                ans = bobArrows.clone();
+            }
+            return;
+        }
+        if(remainArrows >= aliceArrows[i]+1){
+            bobArrows[i] = aliceArrows[i]+1;
+            maximumBobPointsUtil(remainArrows-aliceArrows[i]-1, aliceArrows, bobArrows, i-1, points+i);
+            bobArrows[i] = 0;
+        }
+        maximumBobPointsUtil(remainArrows, aliceArrows, bobArrows, i-1, points);
+    }
+}

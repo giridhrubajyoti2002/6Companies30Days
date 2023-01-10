@@ -1,0 +1,18 @@
+//  https://leetcode.com/problems/all-elements-in-two-binary-search-trees/
+
+
+class Solution {
+    public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+        List<Integer> list = new ArrayList<>();
+        addNodes(root1, list);
+        addNodes(root2, list);
+        Collections.sort(list);
+        return list;
+    }
+    public void addNodes(TreeNode root, List<Integer> list){
+        if(root==null)  return;
+        list.add(root.val);
+        addNodes(root.left, list);
+        addNodes(root.right, list);
+    }
+}
