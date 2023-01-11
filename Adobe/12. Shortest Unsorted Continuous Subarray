@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/shortest-unsorted-continuous-subarray/
+
+
+class Solution {
+    public int findUnsortedSubarray(int[] nums) {
+        int n = nums.length;
+        int i=-1, j=-1;
+        for(int x=1; x<n; x++){
+            if(nums[x-1] > nums[x]){
+                i=x; break;
+            }
+        }
+        for(int x=n-1; x>0; x--){
+            if(nums[x-1] > nums[x]){
+                j=x; break;
+            }
+        }
+        if(i==-1)
+            return 0;
+        int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+        for(int x=0; x<j; x++){
+            max = Math.max(max, nums[x]);
+        }
+        for(int x=i; x<=j; x++){
+            min = Math.min(min, nums[x]);
+        }
+        int st = 0, en = n-1;
+        while(nums[st] <= min){
+            st++;
+        }
+        while(max <= nums[en]){
+            en--;
+        }
+        return en-st+1;
+    }
+}
