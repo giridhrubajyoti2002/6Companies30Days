@@ -1,0 +1,32 @@
+//  https://leetcode.com/problems/fraction-to-recurring-decimal/
+
+
+class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        long n = numerator, d = denominator;
+        StringBuilder sb = new StringBuilder();
+        Map<Long,Integer> map = new HashMap<>();
+        sb.append(Math.abs(n/d));
+        if(n*d<0)
+            sb.insert(0,"-");
+        d = Math.abs(d);
+        if(n%d==0)
+            return sb.toString();
+        long rem = Math.abs(n%d) ;
+        sb.append('.');
+        rem *= 10;
+        map.put(rem, sb.length());
+        while(true){
+            sb.append(rem/d);
+            rem = (rem % d) * 10;
+            if(rem==0)  break;
+            if(map.containsKey(rem)){
+                sb.insert(map.get(rem), "(");
+                sb.append(')');
+                break;            
+            }
+            map.put(rem, sb.length());
+        }
+        return sb.toString();
+    }
+}

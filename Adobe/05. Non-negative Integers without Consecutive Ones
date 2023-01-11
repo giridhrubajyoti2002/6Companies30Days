@@ -1,0 +1,37 @@
+//  https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/
+
+
+class Solution {
+    int[] dp;
+    public int findIntegers(int n){
+        if(n<=1)
+            return n+1;
+        int k = (int)(Math.log(n)/Math.log(2));
+        dp = new int[k+1];
+        Arrays.fill(dp, -1);
+        dp[0] = dp[1] = 0;
+        countConsecutiveOnes(k);
+        return n + 1 - findIntegersUtil(n);
+    }
+    public int findIntegersUtil(int n) {
+        if(n<=1)
+            return 0;
+        int k = (int)(Math.log(n)/Math.log(2));
+        int ans = dp[k];
+        n -= pow(2,k) - 1;
+        int x = n - pow(2,k-1);
+        if(x>=0)
+            ans += dp[k-1] + x;
+        else
+            ans += findIntegersUtil(n-1);
+        return ans;
+    }
+    public int countConsecutiveOnes(int n){
+        if(dp[n]!=-1)
+            return dp[n];
+        return dp[n] = pow(2,n-2) + countConsecutiveOnes(n-2) + countConsecutiveOnes(n-1);
+    }
+    public int pow(int n, int k){
+        return (int)Math.pow(2,k);
+    }
+}
