@@ -1,0 +1,37 @@
+//  https://leetcode.com/problems/stock-price-fluctuation/
+
+
+class StockPrice {
+    TreeMap<Integer,Integer> freq;
+    TreeMap<Integer,Integer> price;
+    public StockPrice() {
+        freq = new TreeMap<>();
+        price = new TreeMap<>();
+    }
+    
+    public void update(int timestamp, int _price) {
+        if(price.containsKey(timestamp)){
+            int prevPrice = price.get(timestamp);
+            freq.put(prevPrice, freq.get(prevPrice) - 1);
+            if(freq.get(prevPrice)==0)
+                freq.remove(prevPrice);
+            price.put(timestamp, _price);
+            freq.put(_price, freq.getOrDefault(_price,0) + 1);
+        }else{
+            price.put(timestamp, _price);
+            freq.put(_price, freq.getOrDefault(_price,0) + 1);
+        }
+    }
+    
+    public int current() {
+        return price.get(price.lastKey());
+    }
+    
+    public int maximum() {
+        return freq.lastKey();
+    }
+    
+    public int minimum() {
+        return freq.firstKey();
+    }
+}
