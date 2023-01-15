@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/minimum-genetic-mutation/
+
+
+class Solution {
+    private int INT_MAX = 999999;
+    char[] chars = {'A','C','G','T'};
+    public int minMutation(String startGene, String endGene, String[] bank) {
+        int n = startGene.length();
+        Set<Character>[] stack = new HashSet[n]; 
+        for(int i=0; i<n; i++)
+            stack[i] = new HashSet<>();        
+        int ans = minMutationUtil(new StringBuilder(startGene), endGene, new HashSet<String>(Arrays.asList(bank)), stack);
+        return ans==INT_MAX?-1:ans;
+    }
+    public int minMutationUtil(StringBuilder start, String end, Set<String> bank, Set<Character>[] stack){
+        if(start.toString().equals(end))
+            return 0;
+        int ans = INT_MAX;
+        for(int i=0; i<start.length(); i++){
+            char currChar = start.charAt(i);
+            for(char c:chars){
+                if(c!=currChar && !stack[i].contains(c)){
+                    start.setCharAt(i, c);
+                    if(bank.contains(start.toString())){
+                        stack[i].add(c);
+                        ans = Math.min(ans, 1 + minMutationUtil(start, end, bank, stack));
+                        stack[i].remove(c);
+                    }
+                }
+            }
+            start.setCharAt(i, currChar);
+        }
+        return ans;
+    }
+}
