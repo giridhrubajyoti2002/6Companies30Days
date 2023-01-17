@@ -1,0 +1,45 @@
+//  https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/
+
+
+class Solution {
+    int INF = (int)1e7;
+    public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+        int[][] minDist = new int[n][n];
+        for(int[] edge:edges){
+            minDist[edge[0]][edge[1]] = minDist[edge[1]][edge[0]] = edge[2];
+        }
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(minDist[i][j]==0 && i!=j)
+                    minDist[i][j] = INF;
+            }
+        }
+        floydWarshall(minDist);
+        int city=-1, num=INF;
+        for(int i=0; i<n; i++){
+            int x = 0;
+            for(int j=0; j<n; j++){
+                if(minDist[i][j] <= distanceThreshold)
+                    x++;
+            }
+            if(x < num){
+                num = x;
+                city = i;
+            }else if(x==num){
+                city = Math.max(city, i);
+            }
+        }
+        return city;
+    }
+    public void floydWarshall(int[][] dist){
+        int n = dist.length;
+        for(int k=0; k<n; k++){
+            for(int i=0; i<n; i++){
+                for(int j=0; j<n; j++){
+                    if(dist[i][k]+dist[k][j] < dist[i][j])
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+}
